@@ -22,7 +22,7 @@ class LigneProduitClient
     private ?FactureClient $factureClient = null;
 
     #[ORM\Column]
-    private ?float $prixUnitaire = null;
+    private ?float $quantity = null;
 
     #[ORM\Column]
     private ?float $remise = null;
@@ -56,14 +56,14 @@ class LigneProduitClient
         return $this;
     }
 
-    public function getPrixUnitaire(): ?float
+    public function getQuantity(): ?float
     {
-        return $this->prixUnitaire;
+        return $this->quantity;
     }
 
-    public function setPrixUnitaire(float $prixUnitaire): self
+    public function setQuantity(float $quantity): self
     {
-        $this->prixUnitaire = $prixUnitaire;
+        $this->quantity = $quantity;
 
         return $this;
     }
@@ -79,8 +79,9 @@ class LigneProduitClient
 
         return $this;
     }
+
     public function __toString(): string
     {
-        return $this->produit.' ('.$this->id.')';
+        return $this->id;
     }
 }

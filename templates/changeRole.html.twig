@@ -4,7 +4,7 @@
          margin-top:20px;
 }
 </style>
-{% set roles = app.User.getroles(TRUE) %}
+{% set roles = 'ROLE_USER' %}
 {% if roles|length > 2 %}
     <select id="listeRoles">
         {% for a in roles %}

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Roles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Factory\ClientFactory; 
@@ -29,6 +30,28 @@ class AppFixtures extends Fixture
         UserFactory::createMany(1);
         LigneProduitClientFactory::createMany(1);
         
+        $manager->flush();
+    }
+
+
+    /***
+     * Création de roles
+     * @param ObjectManager $manager
+     */
+    private function createRoles(ObjectManager $manager): void
+    {
+        $roleList = [
+            'ROLE_ADMIN',
+            'ROLE_USER',
+            'ROLE_COMPTABLE'
+        ];
+
+        foreach ($roleList as $role) {
+            $userBase = new Roles();
+            $userBase->setName($role);
+            $manager->persist($userBase);
+        }
+
         $manager->flush();
     }
 }

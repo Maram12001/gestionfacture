@@ -1,0 +1,46 @@
+{# templates/stats/index.html.twig #}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/stats.css') }}" />
+{% endblock %}
+{% block header %}
+    <nav class="nav">
+        <input type="checkbox" id="nav-check">
+        <div class="nav-header">
+            <div class="nav-title">
+                <a href="/admin" title="Dashborad">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+    <div class="col-lg-12">
+        <h1>Statistiques</h1>
+        <hr>
+    </div>
+    <div class="col-lg-12 stats-panel">
+        <div class="col-lg-3 stats">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="col-lg-3 stats">
+            <canvas id="myChart2"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="{{ asset("assets/bootstrap.js") }}"></script>
+    <script>
+        window.onload = function() {
+            var jsondata1 = "{{ stats1 }}";
+            var jsondata2 = "{{ stats2 }}";
+            const jsonObject1 = JSON.parse(jsondata1.replace(/&quot;/g, '"'));
+            const jsonObject2 = JSON.parse(jsondata2.replace(/&quot;/g, '"'));
+            var ctx = document.getElementById('myChart');
+            var stats2 = document.getElementById('myChart2');
+            var myChart = new Chart(ctx, jsonObject1);
+            var myChart2 = new Chart(stats2, jsonObject2);
+        }
+    </script>
+{% endblock %}

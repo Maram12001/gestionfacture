@@ -29,16 +29,22 @@ class FactureFournisseur
     #[ORM\JoinColumn(nullable: false)]
     private ?Fournisseur $fournisseur = null;
 
-    #[ORM\OneToMany(mappedBy: 'FactureFournisseur', targetEntity: Workflowpaiement::class)]
+    #[ORM\OneToMany(mappedBy: 'FactureFournisseur', targetEntity: Workflowpaiements::class)]
     private Collection $workflowpaiements;
 
-    #[ORM\OneToMany(mappedBy: 'FactureFournisseur', targetEntity: WorkflowPaiements::class)]
-    private Collection $workflowPaiements;
+    #[ORM\OneToMany(mappedBy: 'factureFournisseur', targetEntity: LigneProduitFournisseur::class)]
+    private Collection $ligneProduitFournisseurs;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $paiement = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $livraison = null;
 
     public function __construct()
     {
         $this->workflowpaiements = new ArrayCollection();
-        $this->workflowPaiements = new ArrayCollection();
+        $this->ligneProduitFournisseurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,7 +108,7 @@ class FactureFournisseur
         return $this->workflowpaiements;
     }
 
-    public function addWorkflowpaiement(Workflowpaiement $workflowpaiement): self
+    public function addWorkflowpaiement(Workflowpaiements $workflowpaiement): self
     {
         if (!$this->workflowpaiements->contains($workflowpaiement)) {
             $this->workflowpaiements->add($workflowpaiement);
@@ -112,7 +118,7 @@ class FactureFournisseur
         return $this;
     }
 
-    public function removeWorkflowpaiement(Workflowpaiement $workflowpaiement): self
+    public function removeWorkflowpaiement(Workflowpaiements $workflowpaiement): self
     {
         if ($this->workflowpaiements->removeElement($workflowpaiement)) {
             // set the owning side to null (unless already changed)
@@ -123,8 +129,88 @@ class FactureFournisseur
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getLigneProduitFournisseurs()
+    {
+        return $this->ligneProduitFournisseurs;
+    }
+
+    public function addLigneProduitFournisseur(LigneProduitFournisseur $ligneProduitFournisseur ): self
+    {
+        if (!$this->ligneProduitFournisseurs->contains($ligneProduitFournisseur)) {
+            $this->ligneProduitFournisseurs->add($ligneProduitFournisseur);
+            $ligneProduitFournisseur->setFactureFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneProduitFournisseur(LigneProduitFournisseur $ligneProduitFournisseur): self
+    {
+        if ($this->ligneProduitFournisseurs->removeElement($ligneProduitFournisseur)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneProduitFournisseur->getFactureFournisseur() === $this) {
+                $ligneProduitFournisseur->setFactureFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    /**
+     * @param float|null $tva
+     */
+    public function setTva(?float $tva): void
+    {
+        $this->tva = $tva;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPaiement(): ?string
+    {
+        return $this->paiement;
+    }
+
+    /**
+     * @param string|null $paiement
+     */
+    public function setPaiement(?string $paiement): void
+    {
+        $this->paiement = $paiement;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLivraison(): ?string
+    {
+        return $this->livraison;
+    }
+
+    /**
+     * @param string|null $livraison
+     */
+    public function setLivraison(?string $livraison): void
+    {
+        $this->livraison = $livraison;
+    }
+
     public function __toString(): string
     {
         return (string) $this->id;
     }
+
 }

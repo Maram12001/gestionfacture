@@ -21,6 +21,9 @@ class Produit
     #[ORM\Column]
     private ?float $prixUnitaire = null;
 
+    #[ORM\Column]
+    private ?float $tva = null;
+
     #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: LigneProduitClient::class)]
     private Collection $ligneProduitClients;
 
@@ -87,10 +90,27 @@ class Produit
 
         return $this;
     }
+
+    /**
+     * @return float|null
+     */
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    /**
+     * @param float|null $tva
+     */
+    public function setTva(?float $tva): void
+    {
+        $this->tva = $tva;
+    }
+
     public function __toString(): string
-{
-    return $this->designation;
-}
+    {
+        return $this->designation;
+    }
 
 }
 

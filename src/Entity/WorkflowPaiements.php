@@ -19,9 +19,6 @@ class WorkflowPaiements
     private ?FactureFournisseur $factureFournisseur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateReception = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateEmission = null;
 
     #[ORM\Column(length: 50)]
@@ -44,18 +41,6 @@ class WorkflowPaiements
     public function setFactureFournisseur(?FactureFournisseur $factureFournisseur): self
     {
         $this->factureFournisseur = $factureFournisseur;
-
-        return $this;
-    }
-
-    public function getDateReception(): ?\DateTimeInterface
-    {
-        return $this->dateReception;
-    }
-
-    public function setDateReception(\DateTimeInterface $dateReception): self
-    {
-        $this->dateReception = $dateReception;
 
         return $this;
     }

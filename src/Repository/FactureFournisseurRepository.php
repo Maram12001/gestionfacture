@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\ActionType;
 use App\Entity\FactureFournisseur;
+use App\Entity\Fournisseur;
+use App\Entity\UserLeadAction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +42,21 @@ class FactureFournisseurRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return FactureFournisseur[] Returns an array of FactureFournisseur objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourner les top Fournisseurs
+     * @return array
+     */
+    public function findTopFournisseur(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->select('s.raisonSociale, COUNT(f.id) as factures')
+            ->innerJoin(Fournisseur::class, 's', 'WITH', 's.id = f.fournisseur')
+            ->groupBy('s.raisonSociale')
+            ->orderBy('factures', 'DESC')
+            ->setMaxResults(10);
 
-//    public function findOneBySomeField($value): ?FactureFournisseur
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $results = $queryBuilder->getQuery()->getResult();
+        return $results;
+
+    }
 }

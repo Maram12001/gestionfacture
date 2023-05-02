@@ -30,13 +30,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $usename = null;
+    private ?string $username = null;
 
     #[ORM\Column(length: 10)]
     private ?string $locale = null;
 
     #[ORM\Column]
     private ?bool $is_verified = null;
+
+    #[ORM\ManyToOne(targetEntity: Service::class)]
+    private Service $service;
 
     public function getId(): ?int
     {
@@ -108,14 +111,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsename(): ?string
+    public function getusername(): ?string
     {
-        return $this->usename;
+        return $this->username;
     }
 
-    public function setUsename(string $usename): self
+    public function setusername(string $username): self
     {
-        $this->usename = $usename;
+        $this->username = $username;
 
         return $this;
     }
@@ -143,4 +146,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Service
+     */
+    public function getService(): Service
+    {
+        return $this->service;
+    }
+
+    /**
+     * @param Service $service
+     */
+    public function setService(Service $service): void
+    {
+        $this->service = $service;
+    }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\FactureFournisseur;
 use App\Entity\WorkflowPaiements;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,7 +39,17 @@ class WorkflowPaiementsRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function getLastWorkflowPaiementsForFacture(FactureFournisseur $factureFournisseur){
 
+        return $this->createQueryBuilder('w')
+            ->where('w.factureFournisseur = :facture')
+            ->setParameter('facture', $factureFournisseur)
+            ->orderBy('w.dateEmission', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
 //    /**
 //     * @return WorkflowPaiements[] Returns an array of WorkflowPaiements objects
 //     */

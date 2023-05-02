@@ -25,6 +25,12 @@ class FactureClient
     #[ORM\Column]
     private ?bool $etatComptable = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $paiement = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $livraison = null;
+
     #[ORM\ManyToOne(inversedBy: 'factureClients')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
@@ -119,6 +125,55 @@ class FactureClient
 
         return $this;
     }
+
+    /**
+     * @return float|null
+     */
+    public function getTva(): ?float
+    {
+        return $this->tva;
+    }
+
+    /**
+     * @param float|null $tva
+     */
+    public function setTva(?float $tva): void
+    {
+        $this->tva = $tva;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPaiement(): ?string
+    {
+        return $this->paiement;
+    }
+
+    /**
+     * @param string|null $paiement
+     */
+    public function setPaiement(?string $paiement): void
+    {
+        $this->paiement = $paiement;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLivraison(): ?string
+    {
+        return $this->livraison;
+    }
+
+    /**
+     * @param string|null $livraison
+     */
+    public function setLivraison(?string $livraison): void
+    {
+        $this->livraison = $livraison;
+    }
+
     public function __toString(): string
     {
         return (string) $this->id;

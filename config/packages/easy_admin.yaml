@@ -1,0 +1,38 @@
+easy_admin:
+  entities:
+    FactureFournisseur:
+      class: App\Entity\FactureFournisseur
+      form:
+        dashboard:
+          - { widget: 'chart', route: 'app_product_statistics', label: 'Product Statistics', type: 'line' }
+        fields:
+          - { property: 'id', type: 'int' }
+          - { property: 'dateEmission', type: 'date' }
+          - { property: 'dateEchaence', type: 'date' }
+          - { property: 'etatComptable', type: 'bool' }
+          - { property: 'ligneProduitFournisseurs', type: 'collection', type_options: { entry_type: 'App\Form\LigneProduitFournisseurType' } }
+    LigneProduitFournisseur:
+      class: App\Entity\LigneProduitFournisseur
+      controller: App\Controller\Admin\LigneProduitFournisseurCrudController
+      form:
+        fields:
+          - { property: 'id', type: 'int' }
+          - { property: 'quantity', type: 'number' }
+          - { property: 'remise', type: 'number' }
+          - { property: 'factureFournisseur', type: 'FactureFournisseur' }
+          - { property: 'produit', type: 'Produit' }
+          - { property: 'montantTotal', type: 'text', label: 'Montant total', virtual_property: 'calculatMontantTotal' }
+    LigneProduitClient:
+      class: App\Entity\LigneProduitClient
+      controller: App\Controller\Admin\LigneProduitClientCrudController
+      form:
+        fields:
+          - { property: 'id', type: 'int' }
+          - { property: 'quantity', type: 'number' }
+          - { property: 'remise', type: 'number' }
+          - { property: 'factureClient', type: 'FactureClient' }
+          - { property: 'produit', type: 'Produit' }
+          - { property: 'montantTotal', type: 'text', label: 'Montant total', virtual_property: 'calculatMontantTotal' }
+    menu:
+      - { label: 'Dashboard', route: 'admin', icon: 'fa fa-home' }
+      - { label: 'Statistiques', route: 'stats', icon: 'fa fa-bar-chart' }
